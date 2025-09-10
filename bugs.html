@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spash Softworks - Bugs & Support</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #0a0a0f; color: white; margin: 0; }
+    nav { background: rgba(10,10,15,0.85); padding: 15px 40px; display: flex; justify-content: space-between; }
+    nav h1 { color: #9b4dff; }
+    nav ul { list-style: none; display: flex; gap: 25px; }
+    nav ul li a { color: white; text-decoration: none; }
+    .container { max-width: 900px; margin: 40px auto; padding: 20px; }
+    .bug-item { background: rgba(255,255,255,0.07); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+    .bug-item h4 { margin: 0 0 5px; color: #37d2ff; }
+    .comment-box { margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 8px; }
+    .comment-box p { margin: 4px 0; }
+    button { background: #9b4dff; border: none; padding: 8px 15px; border-radius: 8px; color: white; cursor: pointer; }
+    button:hover { background: #b366ff; }
+    input, textarea { width: 100%; padding: 10px; margin: 8px 0; border-radius: 8px; border: none; background: rgba(255,255,255,0.1); color: white; }
+  </style>
+</head>
+<body>
+  <nav>
+    <h1>Spash Softworks</h1>
+    <ul>
+      <li><a href="Untitled-1.html">Home</a></li>
+      <li><a href="main home page.html">Store</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    <li><a href="faq.html">Faq</a></li>
+        <li><a href="bugs.html">bug Reports</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h2>Bug Reports</h2>
+    <form id="bugForm">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <textarea id="bug" placeholder="Describe the bug..." required></textarea>
+      <button type="submit">Submit Bug</button>
+    </form>
+
+    <h3>Submitted Bugs</h3>
+    <div id="bugList"></div>
+  </div>
+
+  <script>
+    let bugs = JSON.parse(localStorage.getItem("bugs")) || [];
+
+    const bugForm = document.getElementById("bugForm");
+    const bugList = document.getElementById("bugList");
+
+    function saveBugs() {
+      localStorage.setItem("bugs", JSON.stringify(bugs));
+    }
+
+    function renderBugs() {
+      bugList.innerHTML = "";
+      bugs.forEach((bug, index) => {
+        let bugDiv = document.createElement("div");
+        bugDiv.className = "bug-item";
+        bugDiv.innerHTML = `
+          <h4>${bug.name}</h4>
+          <p>${bug.text}</p>
+          <button onclick="deleteBug(${index})">Delete</button>
+          <div class="comment-box">
+            <strong>Comments:</strong>
+            ${bug.comments.map(c => `<p>💬 ${c}</p>`).join("")}
+            <input type="text" id="comment-${index}" placeholder="Add a comment...">
+            <button onclick="addComment(${index})">Post</button>
+          </div>
+        `;
+        bugList.appendChild(bugDiv);
+      });
+    }
+
+    bugForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const bugText = document.getElementById("bug").value.trim();
+      if (name && bugText) {
+        bugs.push({ name, text: bugText, comments: [] });
+        saveBugs();
+        renderBugs();
+        bugForm.reset();
+      }
+    });
+
+    function deleteBug(index) {
+      bugs.splice(index, 1);
+      saveBugs();
+      renderBugs();
+    }
+
+    function addComment(index) {
+      const input = document.getElementById(`comment-${index}`);
+      if (input.value.trim()) {
+        bugs[index].comments.push(input.value.trim());
+        saveBugs();
+        renderBugs();
+      }
+    }
+
+    renderBugs();
+  </script>
+</body>
+</html>

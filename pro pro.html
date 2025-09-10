@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase - Spash Softworks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .purchase-container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+    }
+
+    .purchase-container img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 2rem;
+      color: #a259ff;
+    }
+
+    p {
+      color: #ddd;
+      line-height: 1.6;
+    }
+
+    .price {
+      font-size: 1.4rem;
+      margin: 20px 0;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .buy-btn {
+      background: linear-gradient(135deg, #a259ff, #6a0dad);
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .buy-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(162,89,255,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="purchase-container">
+    <img src="https://via.placeholder.com/600x300.png?text=Spash+Pro+Suite" alt="Product Image">
+    <h1>Spash Studio Pro</h1>
+    <p>
+      Unlock the full power of Spash Studio Pro. With advanced tools, cloud sync, and lifetime updates,
+      this is the ultimate package for professionals who want speed, creativity, and efficiency.
+    </p>
+    <div class="price">$99.00</div>
+    <button id="checkoutBtn" class="buy-btn">Buy with Stripe</button>
+  </div>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const stripe = Stripe("pk_test_YOUR_PUBLIC_KEY"); // Replace with your Stripe publishable key
+
+    document.getElementById("checkoutBtn").addEventListener("click", async () => {
+      const res = await fetch("http://localhost:4242/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: 1 })
+      });
+      const session = await res.json();
+      const result = await stripe.redirectToCheckout({ sessionId: session.id });
+      if (result.error) alert(result.error.message);
+    });
+  </script>
+</body>
+</html>

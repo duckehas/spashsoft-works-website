@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - Spash Softworks</title>
+  <script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+      from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+    import { getFirestore, setDoc, doc, getDoc } 
+      from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+    // 🔹 Replace with YOUR Firebase config
+    const firebaseConfig = {
+      apiKey: "YOUR-API-KEY",
+      authDomain: "YOUR-PROJECT.firebaseapp.com",
+      projectId: "YOUR-PROJECT-ID",
+      storageBucket: "YOUR-PROJECT.appspot.com",
+      messagingSenderId: "YOUR-SENDER-ID",
+      appId: "YOUR-APP-ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Handle Sign Up
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("signupForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        // Check if username already exists
+        const existing = await getDoc(doc(db, "usernames", username));
+        if (existing.exists()) {
+          alert("❌ Username already taken, pick another!");
+          return;
+        }
+
+        try {
+          // Create account
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+
+          // Save username mapping
+          await setDoc(doc(db, "usernames", username), { uid: user.uid });
+
+          // Save user profile
+          await setDoc(doc(db, "users", user.uid), { username, email });
+
+          alert("✅ Account created!");
+          window.location.href = "Untitled-1.html"; // Redirect to Home
+        } catch (error) {
+          alert("Error: " + error.message);
+        }
+      });
+
+      // Handle Sign In
+      document.getElementById("signinBtn").addEventListener("click", async () => {
+        const email = prompt("Enter your email:");
+        const password = prompt("Enter your password:");
+
+        try {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+
+          // If admin logs in
+          if (email === "duckey5656@gmail.com") {
+            window.location.href = "admin.html";
+          } else {
+            window.location.href = "Untitled-1.html";
+          }
+        } catch (error) {
+          alert("❌ Sign in failed: " + error.message);
+        }
+      });
+    });
+  </script>
+  <style>
+    body {
+      margin: 0; font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #1a0033, #0a0a0f);
+      color: white; display: flex; align-items: center; justify-content: center;
+      height: 100vh;
+    }
+    .signup-box {
+      background: rgba(255,255,255,0.05);
+      padding: 40px; border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      width: 350px; text-align: center;
+    }
+    .signup-box h2 { margin-bottom: 20px; color: #9b4dff; }
+    input {
+      width: 100%; padding: 12px; margin: 10px 0;
+      border: none; border-radius: 10px;
+      background: rgba(255,255,255,0.1); color: white;
+    }
+    input::placeholder { color: rgba(255,255,255,0.6); }
+    button {
+      width: 100%; padding: 12px; margin-top: 15px;
+      border: none; border-radius: 10px;
+      background: #9b4dff; color: white;
+      font-size: 16px; cursor: pointer; transition: transform 0.15s;
+    }
+    button:hover { transform: scale(1.05); background: #b366ff; }
+    #signinBtn {
+      margin-top: 20px; background: #37d2ff;
+    }
+    #signinBtn:hover { background: #5be0ff; }
+  </style>
+</head>
+<body>
+  <div class="signup-box">
+    <h2>Create Account</h2>
+    <form id="signupForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+    <button id="signinBtn">Already have an account? Sign In</button>
+  </div>
+</body>
+</html>

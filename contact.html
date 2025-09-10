@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spash Softworks - Contact</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0a0a0f;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+    }
+
+    /* NAVBAR */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      border-bottom: 1px solid rgba(155,77,255,0.3);
+    }
+
+    nav h1 {
+      font-size: 1.5rem;
+      color: #9b4dff;
+      text-shadow: 0 0 15px rgba(155,77,255,0.6);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #37d2ff;
+      text-shadow: 0 0 10px rgba(55,210,255,0.8);
+    }
+
+    /* PAGE HEADER */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 40px;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #37d2ff;
+      text-shadow: 0 0 20px rgba(55,210,255,0.7);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #ccc;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* CONTACT CARDS */
+    .contacts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 40px;
+      padding: 40px 50px 80px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .contact-wrapper {
+      perspective: 1200px;
+    }
+
+    .contact-card {
+      background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+      border-radius: 18px;
+      padding: 40px 20px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+
+      /* Make it act like a link */
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .contact-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      color: #9b4dff;
+    }
+
+    .contact-card p {
+      font-size: 1rem;
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+
+  <!-- NAVBAR -->
+  <nav>
+    <h1>Spash Softworks</h1>
+    <ul>
+      <li><a href="Untitled-1.html">Home</a></li>
+      <li><a href="main home page.html">Store</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    <li><a href="faq.html">Faq</a></li>
+        <li><a href="bugs.html">bug Reports</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Contact Us</h2>
+    <p>Choose a platform below to get in touch with Spash Softworks.</p>
+  </section>
+
+  <!-- CONTACT CARDS -->
+  <div class="contacts">
+    <div class="contact-wrapper">
+      <a href="https://discord.gg/yourserver" target="_blank" class="contact-card">
+        <h3>Discord</h3>
+        <p>Join our community on Discord.</p>
+      </a>
+    </div>
+
+    <div class="contact-wrapper">
+      <a href="mailto:support@spashsoftworks.com" class="contact-card">
+        <h3>Email</h3>
+        <p>support@spashsoftworks.com</p>
+      </a>
+    </div>
+
+    <div class="contact-wrapper">
+      <a href="https://spashsoftworks.com" target="_blank" class="contact-card">
+        <h3>COMMING SOON</h3>
+        <p></p>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // --- Background Animation ---
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d");
+
+    let particles = [];
+    const particleCount = 80;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 1;
+        this.vy = (Math.random() - 0.5) * 1;
+        this.radius = 2;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = Math.random() > 0.5 ? "#9b4dff" : "#37d2ff";
+        ctx.fill();
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+    }
+
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = "rgba(55,210,255,0.2)";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+    animate();
+
+    // --- 3D Tilt Effect ---
+    const cards = document.querySelectorAll('.contact-card');
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * 10;
+        const rotateY = ((x - centerX) / centerX) * 10;
+
+        card.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `rotateX(0) rotateY(0) scale(1)`;
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spash Softworks Loading</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0a0a0f;
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Loading Screen */
+    .loading-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at center, #0a0a0f, #050008);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      transition: opacity 1s ease, visibility 1s ease;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Logo Glow */
+    .logo {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #9b4dff;
+      text-shadow: 0 0 20px rgba(155,77,255,0.8),
+                   0 0 40px rgba(55,210,255,0.6);
+      margin-bottom: 30px;
+      animation: glowPulse 2s infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { text-shadow: 0 0 20px rgba(155,77,255,0.8), 0 0 40px rgba(55,210,255,0.6); }
+      50% { text-shadow: 0 0 35px rgba(55,210,255,1), 0 0 70px rgba(155,77,255,0.9); }
+    }
+
+    /* Progress Container */
+    .progress {
+      width: 300px;
+      height: 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #9b4dff, #37d2ff);
+      box-shadow: 0 0 15px rgba(155,77,255,0.8);
+      transition: width 0.3s ease;
+    }
+
+    /* Status Text */
+    .status {
+      font-size: 1rem;
+      color: #ccc;
+      margin-top: 10px;
+      font-style: italic;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loading">
+    <div class="logo">Spash Softworks</div>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="status" id="status">Initializing...</div>
+  </div>
+
+  <script>
+    const progressBar = document.getElementById("progressBar");
+    const statusText = document.getElementById("status");
+    const loadingScreen = document.getElementById("loading");
+
+    const messages = [
+      "Initializing...",
+      "Loading assets...",
+      "Setting up environment...",
+      "Optimizing performance...",
+      "Starting application..."
+    ];
+
+    let progress = 0;
+    let msgIndex = 0;
+
+    function updateLoading() {
+      progress += Math.random() * 15; // simulate uneven loading
+      if (progress >= 100) {
+        progress = 100;
+        statusText.textContent = "Complete!";
+        setTimeout(() => {
+          loadingScreen.classList.add("hidden");
+          window.location.href = "Untitled-1.html"; // redirect
+        }, 800);
+      } else {
+        progressBar.style.width = progress + "%";
+        if (progress > (msgIndex + 1) * 20 && msgIndex < messages.length - 1) {
+          msgIndex++;
+          statusText.textContent = messages[msgIndex];
+        }
+        setTimeout(updateLoading, 500 + Math.random() * 500);
+      }
+      progressBar.style.width = progress + "%";
+    }
+
+    window.addEventListener("load", () => {
+      setTimeout(updateLoading, 500);
+    });
+  </script>
+</body>
+</html>

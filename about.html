@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Spash Softworks</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0a0a0f;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+    }
+
+    /* NAVBAR */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      border-bottom: 1px solid rgba(155,77,255,0.3);
+    }
+
+    nav h1 {
+      font-size: 1.5rem;
+      color: #9b4dff;
+      text-shadow: 0 0 15px rgba(155,77,255,0.6);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #37d2ff;
+      text-shadow: 0 0 10px rgba(55,210,255,0.8);
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 100px 20px 60px;
+    }
+
+    .hero h2 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      color: #37d2ff;
+      text-shadow: 0 0 20px rgba(55,210,255,0.7);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #ccc;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* VALUES SECTION */
+    .values {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      padding: 60px 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .value-card {
+      background: linear-gradient(145deg, #1e1e25, #2a2a35);
+      border-radius: 18px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .value-card:hover {
+      transform: translateY(-12px) scale(1.03);
+      box-shadow: 0 15px 40px rgba(155,77,255,0.5);
+    }
+
+    .value-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      color: #9b4dff;
+    }
+
+    .value-card p {
+      font-size: 1rem;
+      color: #bbb;
+      line-height: 1.5;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      max-width: 900px;
+      margin: 80px auto;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 100%;
+      background: rgba(155,77,255,0.5);
+    }
+
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 20px 40px;
+    }
+
+    .timeline-item.left {
+      left: 0;
+      text-align: right;
+    }
+
+    .timeline-item.right {
+      left: 50%;
+    }
+
+    .timeline-item h4 {
+      font-size: 1.2rem;
+      color: #37d2ff;
+      margin-bottom: 6px;
+    }
+
+    .timeline-item p {
+      font-size: 0.95rem;
+      color: #bbb;
+      line-height: 1.4;
+    }
+
+    /* TEAM SECTION */
+    .team {
+      padding: 80px 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .team-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 40px;
+      color: #9b4dff;
+      text-shadow: 0 0 15px rgba(155,77,255,0.7);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+    }
+
+    .team-card {
+      background: linear-gradient(145deg, #1e1e25, #2a2a35);
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .team-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(55,210,255,0.4);
+    }
+
+    .team-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .team-card h4 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .team-card span {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg"></canvas>
+
+  <!-- NAVBAR -->
+  <nav>
+    <h1>Spash Softworks</h1>
+    <ul>
+      <li><a href="Untitled-1.html">Home</a></li>
+      <li><a href="main home page.html">Store</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    <li><a href="faq.html">Faq</a></li>
+        <li><a href="bugs.html">bug Reports</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h2>About Spash Softworks</h2>
+    <p>At Spash Softworks, we believe in creating powerful, elegant, and innovative solutions that push technology forward. Our mission is to combine design, performance, and creativity into every product we deliver.</p>
+  </section>
+
+  <!-- VALUES -->
+  <div class="values">
+    <div class="value-card">
+      <h3>Innovation</h3>
+      <p>We constantly explore new ideas and technologies to deliver cutting-edge solutions.</p>
+    </div>
+    <div class="value-card">
+      <h3>Quality</h3>
+      <p>Every product is built with precision, reliability, and user experience in mind.</p>
+    </div>
+    <div class="value-card">
+      <h3>Vision</h3>
+      <p>Our vision is to inspire creativity and empower people with next-generation software.</p>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+    <div class="timeline-item left">
+      <h4>2018</h4>
+      <p>Spash Softworks was founded with a mission to innovate the future of digital software.</p>
+    </div>
+    <div class="timeline-item right">
+      <h4>2020</h4>
+      <p>Launched our first major product suite, gaining global recognition.</p>
+    </div>
+    <div class="timeline-item left">
+      <h4>2023</h4>
+      <p>Expanded into cloud solutions, enhancing collaboration and scalability.</p>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <section class="team">
+    <h2 class="team-title">Our Team</h2>
+    <div class="team-grid">
+      <div class="team-card">
+
+        <h4>! !᲼Diego250x</h4>
+        <span>CEO & Founder</span>
+      </div>
+      <div class="team-card">
+
+        <h4>Monty</h4>
+        <span>Lead Developer</span>
+      </div>
+      <div class="team-card">
+
+        <h4>! !᲼Diego250x</h4>
+        <span>Product Designer</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Background particles
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d");
+
+    let particles = [];
+    const particleCount = 70;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 1;
+        this.vy = (Math.random() - 0.5) * 1;
+        this.radius = 2;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = Math.random() > 0.5 ? "#9b4dff" : "#37d2ff";
+        ctx.fill();
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+    }
+
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = "rgba(55,210,255,0.2)";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+    animate();
+  </script>
+</body>
+</html>
