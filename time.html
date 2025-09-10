@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Time Together</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
+
+body, html {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ff9cd3, #ff69b4);
+    color: white;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    background: rgba(0,0,0,0.3);
+    padding: 50px;
+    border-radius: 30px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+    max-width: 400px;
+    width: 90%;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    color: #fff0f5;
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.time-block {
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 20px 30px;
+    margin: 10px;
+    flex: 1 1 100px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+}
+
+.time-block:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.time-block h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #ffe6f0;
+}
+
+.time-block p {
+    font-size: 16px;
+    color: #ffebf5;
+}
+
+.total {
+    font-size: 24px;
+    background: rgba(255,255,255,0.2);
+    padding: 15px;
+    border-radius: 15px;
+    color: #ffe6f0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+@media(max-width: 500px){
+    .time-display { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Our Time Together</h1>
+    <div class="time-display">
+        <div class="time-block">
+            <h2 id="years">1</h2>
+            <p>Years</p>
+        </div>
+        <div class="time-block">
+            <h2 id="months">10</h2>
+            <p>Months</p>
+        </div>
+        <div class="time-block">
+            <h2 id="days">30</h2>
+            <p>Days</p>
+        </div>
+    </div>
+    <div class="total" id="total">
+        Total: 1 Year / 10 Months / 30 Days
+    </div>
+</div>
+
+<script>
+// Starting fixed time
+let years = 1;
+let months = 10;
+let days = 30;
+
+function incrementDay() {
+    days++;
+    if (days > 30) { // approximate month
+        days = 1;
+        months++;
+    }
+    if (months > 12) {
+        months = 1;
+        years++;
+    }
+
+    document.getElementById('years').textContent = years;
+    document.getElementById('months').textContent = months;
+    document.getElementById('days').textContent = days;
+
+    document.getElementById('total').textContent = 
+        `Total: ${years} Year${years!==1?'s':''} / ${months} Month${months!==1?'s':''} / ${days} Day${days!==1?'s':''}`;
+}
+
+// Increment every day at midnight
+function scheduleIncrement() {
+    const now = new Date();
+    const nextDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const msUntilNextDay = nextDay - now;
+
+    setTimeout(() => {
+        incrementDay();
+        setInterval(incrementDay, 24*60*60*1000);
+    }, msUntilNextDay);
+}
+
+scheduleIncrement();
+</script>
+
+</body>
+</html>

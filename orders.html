@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shay's Food Menu</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background: #111;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+header {
+    width: 100%;
+    padding: 20px 40px;
+    background: rgba(0,0,0,0.5);
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #ff69b4;
+}
+
+.menu-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 40px 20px;
+    gap: 20px;
+}
+
+.menu-item {
+    background: linear-gradient(145deg, #ff9cd3, #ff69b4);
+    border-radius: 20px;
+    padding: 20px;
+    width: 280px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.menu-item:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.menu-item h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+.menu-item p {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #fff8;
+}
+.menu-item span {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.menu-item button {
+    padding: 10px;
+    background: linear-gradient(145deg, #ff69b4, #ff1493);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.menu-item button:hover {
+    background: linear-gradient(145deg, #ff1493, #ff69b4);
+    transform: scale(1.05);
+}
+
+.order-summary {
+    position: fixed;
+    right: 20px;
+    top: 100px;
+    width: 250px;
+    background: rgba(0,0,0,0.7);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+.order-summary h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #ff69b4;
+}
+.order-summary ul {
+    list-style: none;
+    margin-bottom: 15px;
+}
+.order-summary li {
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+.order-summary strong {
+    display: block;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+#sendOrderBtn {
+    padding: 10px;
+    width: 100%;
+    background: linear-gradient(145deg, #ff69b4, #ff1493);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+#sendOrderBtn:hover {
+    background: linear-gradient(145deg, #ff1493, #ff69b4);
+    transform: scale(1.05);
+}
+
+@media(max-width: 900px){
+    .order-summary { position: static; width: 90%; margin: 20px auto; }
+    .menu-container { justify-content: center; }
+    .menu-item { width: 90%; max-width: 350px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<header>Shay's Food</header>
+
+<div class="menu-container">
+    <div class="menu-item">
+        <h3>Cheese Burger</h3>
+        <p>Juicy beef patty with cheddar cheese, lettuce, tomato, and special sauce.</p>
+        <span>$8.99</span>
+        <button onclick="addItem('Cheese Burger',8.99)">Add to Order</button>
+    </div>
+    <div class="menu-item">
+        <h3>Veggie Pizza</h3>
+        <p>Fresh vegetables, tomato sauce, mozzarella cheese, and oregano.</p>
+        <span>$12.50</span>
+        <button onclick="addItem('Veggie Pizza',12.50)">Add to Order</button>
+    </div>
+    <div class="menu-item">
+        <h3>Caesar Salad</h3>
+        <p>Crisp romaine lettuce with parmesan, croutons, and Caesar dressing.</p>
+        <span>$7.00</span>
+        <button onclick="addItem('Caesar Salad',7.00)">Add to Order</button>
+    </div>
+    <div class="menu-item">
+        <h3>Chocolate Shake</h3>
+        <p>Rich and creamy chocolate shake topped with whipped cream.</p>
+        <span>$5.50</span>
+        <button onclick="addItem('Chocolate Shake',5.50)">Add to Order</button>
+    </div>
+    <div class="menu-item">
+        <h3>French Fries</h3>
+        <p>Crispy golden fries served with ketchup or special dip.</p>
+        <span>$3.50</span>
+        <button onclick="addItem('French Fries',3.50)">Add to Order</button>
+    </div>
+</div>
+
+<div class="order-summary">
+    <h2>Order Summary</h2>
+    <ul id="orderList"></ul>
+    <strong>Total: $<span id="total">0.00</span></strong>
+    <button id="sendOrderBtn">Send Order</button>
+</div>
+
+<script>
+// Particle background
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random()-0.5) * 0.7;
+        this.vy = (Math.random()-0.5) * 0.7;
+        this.radius = 2 + Math.random() * 2;
+    }
+
+    move() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+
+    draw() {
+        ctx.fillStyle = '#ff69b4';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+        ctx.fill();
+    }
+}
+
+const particles = [];
+const PARTICLE_COUNT = window.innerWidth < 600 ? 50 : 100;
+for(let i=0;i<PARTICLE_COUNT;i++) particles.push(new Particle());
+
+function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(let i=0;i<particles.length;i++){
+        for(let j=i+1;j<particles.length;j++){
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if(dist < 140){
+                ctx.strokeStyle = `rgba(255,105,180,${1 - dist/140})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.stroke();
+            }
+        }
+    }
+
+    particles.forEach(p => {
+        p.move();
+        p.draw();
+    });
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+// Order functionality
+let order = [];
+let total = 0;
+
+function addItem(name, price){
+    order.push({name, price});
+    total += price;
+    updateOrder();
+}
+
+function updateOrder(){
+    const orderList = document.getElementById('orderList');
+    const totalEl = document.getElementById('total');
+    orderList.innerHTML = '';
+    order.forEach(item=>{
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+        orderList.appendChild(li);
+    });
+    totalEl.textContent = total.toFixed(2);
+}
+
+// Send order via email
+document.getElementById('sendOrderBtn').onclick = function() {
+    if(order.length === 0){
+        alert("Your order is empty!");
+        return;
+    }
+
+    let message = "Order Details:\n";
+    order.forEach(item => {
+        message += `${item.name} - $${item.price.toFixed(2)}\n`;
+    });
+    message += `Total: $${total.toFixed(2)}`;
+
+    const subject = encodeURIComponent("My Food Order");
+    const body = encodeURIComponent(message);
+    const mailtoLink = `mailto:duckey5656@gmail.com?subject=${subject}&body=${body}`;
+
+    window.location.href = mailtoLink;
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Premium - Spash Softworks</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #111;
+  color: #eee;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  background: #000;
+  border-bottom: 1px solid #222;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+nav h1 { font-size: 1.4rem; color: #fff; font-weight: 700; }
+nav ul { list-style: none; display: flex; gap: 25px; }
+nav ul li a { text-decoration: none; color: #eee; font-size: 1rem; font-weight: 500; transition: color 0.3s ease; }
+nav ul li a:hover { color: #ffffff; }
+
+/* HEADER */
+header {
+  text-align: center;
+  padding: 60px 20px 20px;
+}
+header h2 { font-size: 2.2rem; color: #fff; margin-bottom: 10px; }
+header p { color: #ccc; font-size: 1rem; }
+
+/* PREMIUM PANELS */
+.premium-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.premium-panel {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 15px;
+  padding: 25px 20px;
+  width: 280px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.premium-panel:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+}
+
+.premium-panel h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #fff;
+}
+.premium-panel p {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.premium-panel .price {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #fff; /* price now white */
+  margin-bottom: 20px;
+}
+
+/* WHITE BUY BUTTON */
+.premium-panel .buy-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111; /* text color black */
+  background: #fff; /* fully white background */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(255,255,255,0.3);
+}
+.premium-panel .buy-btn:hover {
+  background: #f0f0f0; /* slightly brighter white */
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255,255,255,0.5);
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+  color: #888;
+  background: #000;
+  border-top: 1px solid #222;
+  margin-top: auto;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>Spash Softworks</h1>
+  <ul>
+      <li><a href="Untitled-1.html">Home</a></li>
+      <li><a href="main home page.html">Store</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="faq.html">Faq</a></li>
+      <li><a href="bugs.html">Bugs</a></li>
+     <li><a href="Status.html"i>Status</a></li>
+  </ul>
+</nav>
+
+<header>
+  <h2>Get Premium</h2>
+  <p>Choose the plan that fits your needs</p>
+</header>
+
+<section class="premium-container">
+  <div class="premium-panel">
+    <h3>Basic</h3>
+    <p>Access to core features and updates</p>
+    <div class="price">COMMING SOON</div>
+    <button class="buy-btn" onclick="window.location.href='purchase_basic.html'">Buy Now</button>
+  </div>
+
+  <div class="premium-panel">
+    <h3>Pro</h3>
+    <p>Everything in Basic plus advanced tools</p>
+    <div class="price">COMMING SOON</div>
+    <button class="buy-btn" onclick="window.location.href='purchase_pro.html'">Buy Now</button>
+  </div>
+
+  <div class="premium-panel">
+    <h3>Ultimate</h3>
+    <p>All features including premium support</p>
+    <div class="price">COMMING SOON</div>
+    <button class="buy-btn" onclick="window.location.href='purchase_ultimate.html'">Buy Now</button>
+  </div>
+</section>
+
+<footer>© 2025 Spash Softworks. All rights reserved.</footer>
+
+</body>
+</html>

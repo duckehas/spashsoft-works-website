@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shay's Pics</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
+
+body {
+    background: linear-gradient(135deg, #ff9cd3, #ff69b4);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    color: #fff;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.card {
+    background: rgba(0,0,0,0.3);
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+}
+
+.card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-content h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+    color: #ffe6f0;
+}
+
+.card-content p {
+    font-size: 14px;
+    color: #ffebf5;
+    margin-bottom: 5px;
+}
+
+.card-content input.bio-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff4d6d;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.delete-btn:hover {
+    background: #ff1a3c;
+}
+
+.add-card {
+    background: rgba(255,255,255,0.1);
+    border: 2px dashed #ffe6f0;
+    border-radius: 25px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #ffe6f0;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.add-card:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.upload-btn {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: #ff69b4;
+    border: none;
+    border-radius: 15px;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.upload-btn:hover {
+    background: #ff1493;
+}
+</style>
+</head>
+<body>
+
+<!-- File input -->
+<input type="file" id="fileInput" accept="image/*">
+
+<div class="container" id="picContainer">
+    <!-- Add new pic panel -->
+    <div class="add-card">
+        + Add a Picture
+        <button class="upload-btn" id="uploadBtn">Upload</button>
+    </div>
+</div>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const container = document.getElementById('picContainer');
+const uploadBtn = document.getElementById('uploadBtn');
+
+// Load saved pics from localStorage
+let pics = JSON.parse(localStorage.getItem('pics')) || [];
+
+function savePics() {
+    localStorage.setItem('pics', JSON.stringify(pics));
+}
+
+function renderPics() {
+    // Keep the Add Card button intact
+    const addCard = container.querySelector('.add-card');
+    container.innerHTML = '';
+    container.appendChild(addCard);
+
+    pics.forEach((pic, index) => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+            <img src="${pic.image}" alt="Pic">
+            <div class="card-content">
+                <h2>Shay's Pic</h2>
+                <p>Uploaded: ${pic.date}</p>
+                <input type="text" class="bio-input" value="${pic.bio}" placeholder="Write a bio...">
+            </div>
+            <button class="delete-btn">&times;</button>
+        `;
+        container.insertBefore(card, addCard);
+
+        // Update bio live
+        const bioInput = card.querySelector('.bio-input');
+        bioInput.addEventListener('input', () => {
+            pics[index].bio = bioInput.value;
+            savePics();
+        });
+
+        // Delete button
+        const deleteBtn = card.querySelector('.delete-btn');
+        deleteBtn.addEventListener('click', () => {
+            pics.splice(index, 1);
+            savePics();
+            renderPics();
+        });
+    });
+}
+
+// Trigger file input when upload button clicked
+uploadBtn.addEventListener('click', () => {
+    fileInput.click();
+});
+
+fileInput.addEventListener('change', function(e){
+    const file = e.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const imageUrl = event.target.result;
+        const date = new Date().toLocaleDateString();
+
+        pics.push({
+            image: imageUrl,
+            bio: '',
+            date: date
+        });
+
+        savePics();
+        renderPics();
+    }
+
+    reader.readAsDataURL(file);
+    fileInput.value = "";
+});
+
+// Initial render
+renderPics();
+</script>
+
+</body>
+</html>

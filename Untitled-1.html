@@ -8,274 +8,181 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: Arial, sans-serif;
-      background: black;
-      color: white;
-      overflow-x: hidden;
-      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      background: #111;
+      color: #eee;
+      line-height: 1.6;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
+    }
+
+    /* NAVBAR */
+    nav {
+      position: sticky;
+      top: 0;
+      background: #000;
+      border-bottom: 1px solid #222;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      text-align: center;
+      z-index: 100;
     }
 
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
+    nav h1 {
+      font-size: 1.4rem;
+      color: #fff;
+      font-weight: 700;
     }
 
-    .glow {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(128,0,255,0.3), transparent 70%);
-      animation: pulse 4s infinite;
-      z-index: -1;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
-    }
-
-    h1 {
-      font-size: 3rem;
-      margin-top: 15vh;
-      margin-bottom: 20px;
-      text-shadow: 0 0 15px #9b4dff, 0 0 30px #7a00ff;
-    }
-
-    /* 3D Button */
-    .button-container {
-      perspective: 1000px;
-      margin-bottom: 40px;
-    }
-
-    a.button {
-      display: inline-block;
-      padding: 12px 28px;
-      font-size: 1.1rem;
-      color: white;
-      text-decoration: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #7a00ff, #9b4dff);
-      box-shadow: 0 8px 20px rgba(155,77,255,0.5);
-      position: relative;
-      overflow: hidden;
-      transition: box-shadow 0.3s ease;
-    }
-
-    a.button::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      border-radius: 12px;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.3), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    a.button:hover::before {
-      opacity: 1;
-    }
-
-    /* Floating Info Panels */
-    .panel-container {
+    nav ul {
+      list-style: none;
       display: flex;
       gap: 25px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 20px;
     }
 
-    .panel-wrapper {
-      perspective: 1000px;
+    nav ul li a {
+      text-decoration: none;
+      color: #eee;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #bbb;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      text-align: center;
+      padding: 120px 20px;
+      background: linear-gradient(to right, #000, #111);
+      flex: 1; /* pushes footer down */
+    }
+
+    .hero h2 {
+      font-size: 2.8rem;
+      color: #fff;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #ccc;
+      max-width: 600px;
+      margin: 0 auto 25px;
+    }
+
+    .explore-btn {
+      padding: 14px 32px;
+      border: none;
+      border-radius: 6px;
+      background: #fff;
+      color: #000;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .explore-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+    }
+
+    /* INFO PANELS */
+    .info-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 80px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .panel {
-      width: 260px;
-      padding: 20px;
-      border-radius: 15px;
-      background: rgba(20, 20, 30, 0.85);
-      border: 1px solid rgba(155,77,255,0.4);
-      box-shadow: 0 8px 20px rgba(155,77,255,0.3);
-      transition: box-shadow 0.3s ease;
-      position: relative;
-      overflow: hidden;
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 10px;
+      border: 1px solid #2a2a2a;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .panel::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      border-radius: 15px;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.15), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
+    .panel:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
     }
 
-    .panel h2 {
+    .panel h3 {
       font-size: 1.3rem;
-      margin-bottom: 10px;
-      color: #9b4dff;
-      text-shadow: 0 0 10px rgba(155,77,255,0.6);
+      margin-bottom: 12px;
+      color: #fff;
     }
 
     .panel p {
-      font-size: 0.95rem;
-      line-height: 1.5;
-      color: #ddd;
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #888;
+      background: #000;
+      border-top: 1px solid #222;
+      margin-top: auto; /* stick footer to bottom */
     }
   </style>
 </head>
 <body>
-  <canvas id="bg"></canvas>
-  <div class="glow"></div>
+  <!-- NAVBAR -->
+  <nav>
+    <h1>Spash Softworks</h1>
+    <ul>
+      <li><a href="Untitled-1.html">Home</a></li>
+      <li><a href="main home page.html">Store</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="faq.html">Faq</a></li>
+      <li><a href="bugs.html">Bugs</a></li>
+     <li><a href="Status.html"i>Status</a></li>
 
-  <h1>Spash Softworks</h1>
-  <div class="button-container">
-    <a href="main home page.html" class="button tilt">Explore Now</a>
-  </div>
+    </ul>
+  </nav>
 
-  <div class="panel-container">
-    <div class="panel-wrapper">
-      <div class="panel tilt">
-        <h2>Who We Are</h2>
-        <p>Spash Softworks is a roblox api creator made by ! !᲼Diego250x he has spent years trying to make spash Softworks one of the best roblox api providers</p>
-      </div>
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Welcome to Spash Softworks</h2>
+    <p>Professional software Creator for Roblox Apis.</p>
+<button class="explore-btn" onclick="window.location.href='main home page.html'">Explore Now</button>
+
+  </section>
+
+  <!-- INFO PANELS -->
+  <section class="info-section">
+    <div class="panel">
+      <h3>Our Mission</h3>
+      <p>Delivering efficient, modern, and secure software to empower professionals worldwide.</p>
     </div>
-    <div class="panel-wrapper">
-      <div class="panel tilt">
-        <h2>Our Mission</h2>
-        <p>We strive to push technology further by designing seamless, powerful, and immersive software solutions.</p>
-      </div>
+    <div class="panel">
+      <h3>Our Products</h3>
+      <p>here at spash softworks we make roblox apis for executors but only the best no need ot go threw a million ads just one click and your done.</p>
     </div>
-    <div class="panel-wrapper">
-      <div class="panel tilt">
-        <h2>Why Choose Us</h2>
-        <p>Cutting-edge design, smooth performance, and a passion for excellence — that’s the Spash promise.</p>
-      </div>
+    <div class="panel">
+      <h3>Our Vision</h3>
+      <p>Shaping the future of software with innovation, integrity, and customer focus.</p>
     </div>
-  </div>
+  </section>
 
-  <script>
-    // --- Background Animation ---
-    const canvas = document.getElementById("bg");
-    const ctx = canvas.getContext("2d");
-
-    let particles = [];
-    const particleCount = 70;
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 1;
-        this.vy = (Math.random() - 0.5) * 1;
-        this.radius = 2;
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "#9b4dff";
-        ctx.fill();
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-    }
-
-    function connectParticles() {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          let dx = particles[i].x - particles[j].x;
-          let dy = particles[i].y - particles[j].y;
-          let dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = "rgba(155,77,255,0.2)";
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      connectParticles();
-      requestAnimationFrame(animate);
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-    animate();
-
-    // --- Enhanced Tilt Effect ---
-    document.querySelectorAll(".tilt").forEach(element => {
-      let rect = null;
-      let mouseX = 0, mouseY = 0;
-      let currentX = 0, currentY = 0;
-
-      function updateTransform() {
-        currentX += (mouseX - currentX) * 0.1;
-        currentY += (mouseY - currentY) * 0.1;
-        element.style.transform = `rotateX(${currentY}deg) rotateY(${currentX}deg) scale(1.05)`;
-        requestAnimationFrame(updateTransform);
-      }
-      updateTransform();
-
-      element.parentElement.addEventListener("mousemove", e => {
-        rect = element.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        mouseX = ((x / rect.width) - 0.5) * 20;
-        mouseY = ((y / rect.height) - 0.5) * -20;
-
-        element.querySelector("::before");
-        element.style.boxShadow = "0 15px 40px rgba(155,77,255,0.7)";
-        element.style.setProperty("--glowX", `${x}px`);
-        element.style.setProperty("--glowY", `${y}px`);
-        element.style.setProperty("--glowOpacity", "1");
-        element.style.setProperty("--glowScale", "1");
-      });
-
-      element.parentElement.addEventListener("mouseleave", () => {
-        mouseX = 0;
-        mouseY = 0;
-        element.style.boxShadow = "0 8px 20px rgba(155,77,255,0.5)";
-      });
-    });
-  </script>
+  <!-- FOOTER -->
+  <footer>
+    © 2025 Spash Softworks. All rights reserved.
+  </footer>
 </body>
 </html>
